@@ -1,15 +1,29 @@
 package com.example.aidlserver;
 
 import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import SeparatePackage.aidlInterface;
+import java.util.List;
 
-public class MyService extends Service {
+import SeparatePk.IRemoteServiceCallback;
+import SeparatePk.aidlInterface;
+import SeparatePk.IRemoteServiceCallback;
+import SeparatePk.IRemoteServiceCallback;
+
+public class MyService extends Service  {
+    IRemoteServiceCallback iRemoteServiceCallback2;
     public MyService() {
 
     }
@@ -19,19 +33,34 @@ public class MyService extends Service {
     public IBinder onBind(Intent intent) {
         return stubObject;
     }
-    
-    SeparatePackage.aidlInterface.Stub stubObject = new SeparatePackage.aidlInterface.Stub() {
+
+    aidlInterface.Stub stubObject = new aidlInterface.Stub() {
         @Override
-        public int calculateData(int firstValue, int secondValue, int operationType) throws RemoteException {
-            switch (operationType){
-                case 0 :
-                    return firstValue+secondValue;
-                case 1:
-                    return firstValue*secondValue;
-                default:
-                    return firstValue+secondValue;
-            }
+        public void trigger(IRemoteServiceCallback iRemoteServiceCallback) throws RemoteException {
+            iRemoteServiceCallback2 = iRemoteServiceCallback;
+            callBack();
         }
     };
+
+    private void callBack() {
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+
+                }
+
+                Log.d("MyService","call");
+                try {
+                    iRemoteServiceCallback2.feedBack("freeClient1");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("MyService","back");
+
+            }
+        }.start();
+    }
 
 }
