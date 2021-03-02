@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import SeparatePk.aidlInterface;
 import SeparatePk.IRemoteServiceCallback;
@@ -34,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewResult,textViewAction;
     String ts,ts1,ts2,ts3,ts4,ts5;
     DatabaseHelper databaseHelper;
+    Long tsLong1,tsLong0;
+    int i;
+    String[] a = {"01521206095","01516174937","01885848141","01852621069","01517141659","01830201144","01537145043","01716496606",
+    "01745764621","01879909991"};
+    ArrayList<String> phoneNumList = new ArrayList<String>(Arrays.asList(a));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +58,15 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                i=0;
                 //Toast.makeText(MainActivity.this,"Action Send to server",Toast.LENGTH_SHORT).show();
                 textViewAction.setText("Action Send to server");
-                int firstNum = Integer.valueOf(editTextfirstNum.getText().toString());
-                int secondNum = Integer.valueOf(editTextSecondNum.getText().toString());
+                //int firstNum = Integer.valueOf(editTextfirstNum.getText().toString());
+                //int secondNum = Integer.valueOf(editTextSecondNum.getText().toString());
                 try {
-                    Long tsLong0 = System.currentTimeMillis();
-                    ts = tsLong0.toString();
-                    databaseHelper.addInfo("1","controller","signal sent to clients",ts);
+                    /*tsLong1 = System.currentTimeMillis();
+                    ts1 = tsLong1.toString();
+                    databaseHelper.addInfo("1","controller","signal sent to clients",ts1);*/
 
                     Log.d("260","Clicked");
                     aidlObject.trigger(stubObjectR);
@@ -207,31 +215,43 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void feedBack(String msg) throws RemoteException {
             if(msg.equalsIgnoreCase("freeClient5")){
-                Long tsLong0 = System.currentTimeMillis();
-                ts = tsLong0.toString();
-                databaseHelper.addInfo("2","client5","this is client 5",ts);
+                /*tsLong0 = System.currentTimeMillis();
+                ts = (tsLong0-tsLong1)+"";
+                databaseHelper.addInfo("2","client5","this is client 5",ts);*/
             }
             if(msg.equalsIgnoreCase("freeClient2")){
-                Long tsLong0 = System.currentTimeMillis();
-                ts = tsLong0.toString();
-                databaseHelper.addInfo("3","client2","this is client 2",ts);
+                /*tsLong0 = System.currentTimeMillis();
+                ts = (tsLong0-tsLong1)+"";
+                databaseHelper.addInfo("3","client2","this is client 2",ts);*/
             }
             if(msg.equalsIgnoreCase("freeClient4")){
-                Long tsLong0 = System.currentTimeMillis();
-                ts = tsLong0.toString();
-                databaseHelper.addInfo("4","client4","this is client 4",ts);
+                /*tsLong0 = System.currentTimeMillis();
+                ts = (tsLong0-tsLong1)+"";
+                databaseHelper.addInfo("4","client4","this is client 4",ts);*/
             }
             if(msg.equalsIgnoreCase("freeClient1")){
-                Long tsLong0 = System.currentTimeMillis();
-                ts = tsLong0.toString();
-                databaseHelper.addInfo("5","client1","this is client 1",ts);
+                Log.d("260","call");
+                //aidlObject.SendSMS("01521206095","Campaign will start at 9 AM");
+                Log.d("260",i+"");
+                if(i < phoneNumList.size()){
+                    aidlObject.SendSMS(phoneNumList.get(i++).toString(),"Campaign will start at 10 AM");
+                }
+                /*tsLong0 = System.currentTimeMillis();
+                ts = (tsLong0-tsLong1)+"";
+                databaseHelper.addInfo("5","client1","this is client 1",ts);*/
             }
             if(msg.equalsIgnoreCase("freeClient3")){
-                Long tsLong0 = System.currentTimeMillis();
-                ts = tsLong0.toString();
-                databaseHelper.addInfo("6","client3","this is client 3",ts);
+                /*tsLong0 = System.currentTimeMillis();
+                ts = (tsLong0-tsLong1)+"";
+                databaseHelper.addInfo("6","client3","this is client 3",ts);*/
             }
             Log.d("260",msg);
+        }
+
+        @Override
+        public void sentStatus(String message) throws RemoteException {
+            Log.d("260",message);
+            Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
         }
     };
 

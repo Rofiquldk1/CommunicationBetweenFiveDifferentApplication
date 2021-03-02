@@ -6,4 +6,5 @@ import SeparatePk.IRemoteServiceCallback;
 
 interface IRemoteServiceCallback {
     void feedBack(String msg);
+    void sentStatus(String message);
 }

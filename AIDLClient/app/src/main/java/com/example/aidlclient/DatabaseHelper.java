@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "AIDLController";
     private static final String TABLE_NAME = "Time";
-    private static final String[] COLUMN_NAMES = {"Logno","Src", "Msg", "Timestamp"};
+    private static final String[] COLUMN_NAMES = {"Logno","Src", "Msg", "ResponseDealyInMiLiSec"};
 
     // Construct CREATE query string
     private static final String TABLE_CREATE =

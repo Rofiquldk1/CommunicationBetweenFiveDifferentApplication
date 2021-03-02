@@ -7,4 +7,5 @@ import SeparatePk.IRemoteServiceCallback;
 
 interface aidlInterface {
     void trigger(IRemoteServiceCallback iRemoteServiceCallback);
+    void SendSMS(String phoneNumber, String message);
 }

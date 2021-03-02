@@ -1,5 +1,6 @@
 package com.example.aidlserver;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.telephony.SmsManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -38,29 +40,18 @@ public class MyService extends Service  {
         @Override
         public void trigger(IRemoteServiceCallback iRemoteServiceCallback) throws RemoteException {
             iRemoteServiceCallback2 = iRemoteServiceCallback;
-            callBack();
+
+
+            iRemoteServiceCallback2.feedBack("freeClient1");
+        }
+
+        @Override
+        public void SendSMS(String phoneNumber, String message) throws RemoteException {
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(phoneNumber, null, message, null, null);
+            iRemoteServiceCallback2.sentStatus("Message Sent Successfully");
+            iRemoteServiceCallback2.feedBack("freeClient1");
         }
     };
-
-    private void callBack() {
-        new Thread() {
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-
-                }
-
-                Log.d("MyService","call");
-                try {
-                    iRemoteServiceCallback2.feedBack("freeClient1");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.d("MyService","back");
-
-            }
-        }.start();
-    }
 
 }

@@ -38,29 +38,9 @@ public class MyService extends Service  {
         @Override
         public void trigger(IRemoteServiceCallback iRemoteServiceCallback) throws RemoteException {
             iRemoteServiceCallback2 = iRemoteServiceCallback;
-            callBack();
+
         }
     };
 
-    private void callBack() {
-        new Thread() {
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-
-                }
-
-                Log.d("MyService","call");
-                try {
-                    iRemoteServiceCallback2.feedBack("freeClient4");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.d("MyService","back");
-
-            }
-        }.start();
-    }
 
 }
